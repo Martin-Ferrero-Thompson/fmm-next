@@ -9,8 +9,8 @@ export default async function SponsorsPage() {
   const { data: sponsors, error } = await supabase
     .from('sponsors')
     .select('*')
-    .eq('is_active', true) // Only get sponsors marked as active
-    .order('name'); // Order them alphabetically
+    .eq('is_active', true)
+    .order('name');
 
   if (error) {
     console.error('Error fetching sponsors:', error);
@@ -20,7 +20,8 @@ export default async function SponsorsPage() {
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center mb-8">Our Sponsors</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* vvv THIS IS THE ONLY LINE THAT CHANGED vvv */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {sponsors?.map(sponsor => (
           <SponsorCard key={sponsor.id} sponsor={sponsor} />
         ))}
