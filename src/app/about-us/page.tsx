@@ -1,9 +1,10 @@
 // src/app/about-us/page.tsx
 import { createClient } from '@/lib/supabase/server';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
-import Carousel from '@/components/Carousel'; // <-- Import the new Carousel
+import Carousel from '@/components/Carousel';
 
-// Define the specific types for this page's content
+// ... (Keep the type definitions: ImageType, DetailItem, AboutUsPageContent)
 type ImageType = {
   image_url: string;
   alt_text: string;
@@ -21,6 +22,7 @@ type AboutUsPageContent = {
   note: string;
 };
 
+
 export default async function AboutUsPage() {
   const supabase = await createClient();
 
@@ -34,28 +36,25 @@ export default async function AboutUsPage() {
     return <p>Page content not found.</p>;
   }
   
-  const content: AboutUsPageContent = page.content as any;
+  // vvv THIS LINE IS FIXED vvv
+  const content = page.content as AboutUsPageContent | null;
 
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center text-brand mb-12">{page.title}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-        {/* Left Column: Image Carousel */}
         <div className="md:col-span-1">
-          {content.image_gallery && content.image_gallery.length > 0 && (
+          {content?.image_gallery && content.image_gallery.length > 0 && (
             <Carousel slides={content.image_gallery} options={{ loop: true }} />
           )}
         </div>
-
-        {/* Right Column: Content */}
         <div className="md:col-span-2">
           <div className="prose prose-invert prose-lg max-w-none mb-6">
-            <ReactMarkdown>{content.body}</ReactMarkdown>
+            <ReactMarkdown>{content?.body}</ReactMarkdown>
           </div>
-          
           <div className="space-y-4 text-lg">
-            {content.details_list.map((item) => (
+            {content?.details_list.map((item) => (
               <div key={item.label} className="flex flex-wrap items-baseline gap-x-2">
                 <span className="font-bold text-yellow-400">{item.label}:</span>
                 <div className="prose prose-invert">
@@ -64,9 +63,8 @@ export default async function AboutUsPage() {
               </div>
             ))}
           </div>
-
           <div className="prose prose-invert prose-lg max-w-none mt-6">
-            <ReactMarkdown>{content.note}</ReactMarkdown>
+            <ReactMarkdown>{content?.note}</ReactMarkdown>
           </div>
         </div>
       </div>

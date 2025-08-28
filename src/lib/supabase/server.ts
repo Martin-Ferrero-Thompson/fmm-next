@@ -1,9 +1,8 @@
 // src/lib/supabase/server.ts
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers' // <-- THIS LINE WAS MISSING
 
 export const createClient = async () => {
-  // vvv THE KEY CHANGE IS ADDING 'await' HERE vvv
   const cookieStore = await cookies()
 
   return createServerClient(
@@ -17,14 +16,14 @@ export const createClient = async () => {
         set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options })
-          } catch (error) {
+          } catch (_error) {
             // The `set` method was called from a Server Component.
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options })
-          } catch (error) {
+          } catch (_error) {
             // The `delete` method was called from a Server Component.
           }
         },

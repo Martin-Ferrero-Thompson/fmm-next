@@ -11,12 +11,13 @@ type ImageType = {
   alt_text: string;
 };
 
+// vvv SIMPLIFIED TYPE DEFINITION vvv
 type PropType = {
   slides: ImageType[];
-  options?: any;
+  options?: { loop?: boolean; [key: string]: any };
 };
+// ^^^ SIMPLIFIED TYPE DEFINITION ^^^
 
-// Simple SVG for the navigation arrows
 const PrevIcon = () => (
   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 );
@@ -28,14 +29,12 @@ const Carousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay()]);
 
-  // State to track if the buttons should be enabled
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
-  // This effect updates the button disabled states when the carousel scrolls
   useEffect(() => {
     if (!emblaApi) return;
     
@@ -46,7 +45,7 @@ const Carousel: React.FC<PropType> = (props) => {
 
     emblaApi.on('select', onSelect);
     emblaApi.on('reInit', onSelect);
-    onSelect(); // Set initial state
+    onSelect();
     
     return () => {
       emblaApi.off('select', onSelect);
@@ -72,7 +71,6 @@ const Carousel: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      {/* Previous Button */}
       <button
         className="absolute top-1/2 left-2 -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 disabled:opacity-30"
         onClick={scrollPrev}
@@ -81,7 +79,6 @@ const Carousel: React.FC<PropType> = (props) => {
         <PrevIcon />
       </button>
 
-      {/* Next Button */}
       <button
         className="absolute top-1/2 right-2 -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 disabled:opacity-30"
         onClick={scrollNext}

@@ -16,15 +16,14 @@ type HomePageContent = {
 export default async function HomePage() {
   const supabase = await createClient();
 
-  // Fetch content for the homepage from your Supabase table
   const { data: page } = await supabase
     .from('pages')
     .select('content')
     .eq('slug', 'home')
     .single();
 
-  // Cast the fetched content to our defined type
-  const content: HomePageContent | null = page?.content as any;
+  // vvv THIS LINE IS FIXED vvv
+  const content = page?.content as HomePageContent | null;
 
   if (!content) {
     return <p className="text-center py-12">Homepage content is not available.</p>;
@@ -41,8 +40,6 @@ export default async function HomePage() {
       <hr className="w-48 sm:w-96 mx-auto my-8 border-gray-600" />
       
       <div className="max-w-3xl text-lg text-gray-300 space-y-4 text-left sm:text-center">
-        {/* vvv THE FIX IS HERE vvv */}
-        {/* Apply prose classes to a parent div, not the component itself */}
         <div className="prose prose-invert prose-lg max-w-none">
           <ReactMarkdown>{content.body}</ReactMarkdown>
         </div>
