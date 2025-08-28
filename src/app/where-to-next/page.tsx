@@ -1,3 +1,4 @@
+// src/app/where-to-next/page.tsx
 import { createClient } from '@/lib/supabase/server';
 import ReactMarkdown from 'react-markdown';
 import Countdown from '@/components/Countdown';
@@ -37,7 +38,8 @@ export default async function WhereToNextPage() {
     const ride = content.next_ride;
 
     return (
-        <div className="bg-gray-900">
+        // vvv THIS IS THE FIX: REMOVED bg-gray-900 FROM THIS DIV vvv
+        <div> 
             <div className="container mx-auto px-4 py-12">
                 <h1 className="text-4xl md:text-5xl font-bold text-center text-brand mb-8">{page.title}</h1>
 
@@ -54,7 +56,7 @@ export default async function WhereToNextPage() {
                             <p><span className="font-bold text-yellow-400">Title:</span> {ride.title}</p>
                             <p><span className="font-bold text-yellow-400">Date:</span> {new Date(ride.ride_datetime).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
                             <p><span className="font-bold text-yellow-400">Start Time:</span> {new Date(ride.ride_datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-                            <p className="flex flex-wrap items-baseline gap-x-2"><span className="font-bold text-yellow-400">Start Point:</span> <span className="prose prose-invert inline-block"><ReactMarkdown>{ride.start_point}</ReactMarkdown></span></p>
+                            <div className="flex flex-wrap items-baseline gap-x-2"><span className="font-bold text-yellow-400">Start Point:</span> <span className="prose prose-invert inline-block"><ReactMarkdown>{ride.start_point}</ReactMarkdown></span></div>
                             <p><span className="font-bold text-yellow-400">Destination:</span> {ride.destination}</p>
                             <p><span className="font-bold text-yellow-400">Distance (approx.):</span> {ride.distance}</p>
                             <p><span className="font-bold text-yellow-400">Ride Time (estimate):</span> {ride.duration}</p>

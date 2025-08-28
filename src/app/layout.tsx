@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Analytics } from "@vercel/analytics/react"; 
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-900 text-gray-200`}>
+      <body className={`${inter.className} text-gray-200 flex flex-col min-h-screen`}>
         <Navbar />
-        <main className="min-h-screen">
+
+        {/* vvv THIS IS THE FIX vvv */}
+        <main className="flex-grow bg-gray-900">
           {children}
         </main>
+        
         <Footer />
-        <Analytics /> {/* <-- 2. Place the component here */}
+        <Analytics />
       </body>
     </html>
   );
