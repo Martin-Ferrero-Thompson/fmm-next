@@ -1,29 +1,30 @@
 // src/app/faq/page.tsx
 import { createClient } from '@/lib/supabase/server';
-import { type Faq } from '@/types';
-import FaqList from '@/components/FaqList'; // Import the new client component
+import AccordionList from '@/components/AccordionList'; // Use the new component
+import type { AccordionItemData } from '@/components/AccordionList';
 
 export default async function FaqPage() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: faqs, error } = await supabase
     .from('faqs')
     .select('*')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
-  const faqs: Faq[] | null = data;
+  if (error) { /* ... error handling ... */ }
 
-  if (error) {
-    console.error('Error fetching FAQs:', error);
-    return <p className="text-center text-red-500">Could not load FAQs at this time.</p>;
-  }
+  // Adapt the 'faqs' data to match the generic 'AccordionItemData' type
+  const items: AccordionItemData[] = faqs?.map(faq => ({
+    id: faq.id,
+    title: `${faq.display_order}. ${faq.question}`,
+    content: faq.answer,
+  })) || [];
 
   return (
     <main className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center text-brand mb-8">Frequently Asked Questions</h1>
-      {/* Render the FaqList and pass the data to it */}
-      <FaqList faqs={faqs || []} />
+      <AccordionList items={items} />
     </main>
   );
 }

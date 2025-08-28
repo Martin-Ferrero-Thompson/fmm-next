@@ -3,6 +3,7 @@
 
 import ReactMarkdown from 'react-markdown';
 
+// vvv THIS IS THE CORRECTED ICON CODE vvv
 const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -15,24 +16,23 @@ const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
   </svg>
 );
+// ^^^ THIS IS THE CORRECTED ICON CODE ^^^
 
-// We've updated the props it accepts
 type AccordionItemProps = {
-  question: string;
-  answer: string;
+  title: string;
+  content: string;
   isOpen: boolean;
   onToggle: () => void;
 };
 
-// No more useState!
-export default function AccordionItem({ question, answer, isOpen, onToggle }: AccordionItemProps) {
+export default function AccordionItem({ title, content, isOpen, onToggle }: AccordionItemProps) {
   return (
     <div className="border-b border-gray-700">
       <button
-        onClick={onToggle} // Use the onToggle function from props
+        onClick={onToggle}
         className="w-full flex justify-between items-center text-left py-4 px-2"
       >
-        <h3 className="text-lg font-semibold text-brand">{question}</h3>
+        <h3 className="text-lg font-semibold text-gray-200">{title}</h3>
         <ChevronIcon isOpen={isOpen} />
       </button>
 
@@ -43,7 +43,7 @@ export default function AccordionItem({ question, answer, isOpen, onToggle }: Ac
       >
         <div className="overflow-hidden">
           <div className="prose prose-invert p-4 pt-0 text-gray-300">
-            <ReactMarkdown>{answer}</ReactMarkdown>
+            <ReactMarkdown>{content}</ReactMarkdown>
           </div>
         </div>
       </div>
