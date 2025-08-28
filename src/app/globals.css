@@ -27,7 +27,7 @@ body {
 
 @layer utilities {
   .text-brand {
-    @apply text-yellow-400; /* You can adjust the color shade here, e.g., yellow-500 */
+    @apply text-yellow-500; 
   }
 }
 
