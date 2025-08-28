@@ -11,12 +11,11 @@ type ImageType = {
   alt_text: string;
 };
 
-// vvv SIMPLIFIED TYPE DEFINITION vvv
+// vvv THIS IS THE CORRECTED TYPE vvv
 type PropType = {
   slides: ImageType[];
-  options?: { loop?: boolean; [key: string]: any };
+  options?: { loop?: boolean };
 };
-// ^^^ SIMPLIFIED TYPE DEFINITION ^^^
 
 const PrevIcon = () => (
   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
