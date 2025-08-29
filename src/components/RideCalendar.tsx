@@ -9,10 +9,6 @@ import { type RideDiaryEntry } from '@/types';
 import RideDetailModal from './RideDetailModal';
 import type { EventClickArg } from '@fullcalendar/core';
 
-// CSS imports are directly inside the component
-// import '@fullcalendar/common/main.css';
-// import '@fullcalendar/daygrid/main.css';
-
 type CalendarProps = {
   entries: RideDiaryEntry[];
 };
