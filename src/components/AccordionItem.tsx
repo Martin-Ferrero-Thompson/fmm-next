@@ -32,7 +32,7 @@ export default function AccordionItem({ title, content, isOpen, onToggle }: Acco
         onClick={onToggle}
         className="w-full flex justify-between items-center text-left py-4 px-2"
       >
-        <h3 className="text-lg font-semibold text-gray-200">{title}</h3>
+        <h3 className="text-lg font-semibold text-brand">{title}</h3>
         <ChevronIcon isOpen={isOpen} />
       </button>
 
