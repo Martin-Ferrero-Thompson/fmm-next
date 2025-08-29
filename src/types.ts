@@ -7,3 +7,12 @@ export type Faq = {
   display_order: number | null;
   is_active: boolean;
 };
+
+export type PhotoAlbum = {
+  id: string;
+  title: string;
+  album_type: string;
+  event_date: string | null;
+  external_url: string;
+  thumbnail_url: string | null;
+};
