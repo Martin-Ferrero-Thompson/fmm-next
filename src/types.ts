@@ -16,3 +16,16 @@ export type PhotoAlbum = {
   external_url: string;
   thumbnail_url: string | null;
 };
+
+export type RideDiaryEntry = {
+  id: string;
+  ride_date: string;
+  name: string;
+  departure_time: string;
+  destination: string;
+  distance: string | null;
+  duration: string | null;
+  guidance: string;
+  notes: string | null;
+  photos_url: string | null;
+};
