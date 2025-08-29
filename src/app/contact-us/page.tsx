@@ -54,7 +54,7 @@ export default async function ContactUsPage() {
                 <ReactMarkdown
                   // vvv THIS IS THE FIX vvv
                   components={{
-                    a: ({node, ...props}) => <a className="text-brand hover:underline" {...props} />
+                    a: ({...props}) => <a className="text-brand hover:underline" {...props} />
                   }}
                 >
                   {content.body}

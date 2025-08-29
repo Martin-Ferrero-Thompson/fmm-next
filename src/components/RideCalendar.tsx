@@ -7,6 +7,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { type RideDiaryEntry } from '@/types';
 import RideDetailModal from './RideDetailModal';
+import type { EventClickArg } from '@fullcalendar/core';
+
+// CSS imports are directly inside the component
+import '@fullcalendar/common/main.css';
+import '@fullcalendar/daygrid/main.css';
 
 type CalendarProps = {
   entries: RideDiaryEntry[];
@@ -15,16 +20,15 @@ type CalendarProps = {
 export default function RideCalendar({ entries }: CalendarProps) {
   const [selectedEntry, setSelectedEntry] = useState<RideDiaryEntry | null>(null);
 
-  // Map your Supabase data to the format FullCalendar expects
   const events = entries.map(entry => ({
     id: entry.id,
     title: entry.name,
     start: new Date(entry.ride_date),
-    extendedProps: entry, // Store the full entry object to show in the modal
+    extendedProps: entry,
   }));
 
-  // This function is called when a user clicks an event
-  const handleEventClick = (clickInfo: any) => {
+  // vvv THIS IS THE FIX vvv
+  const handleEventClick = (clickInfo: EventClickArg) => {
     setSelectedEntry(clickInfo.event.extendedProps as RideDiaryEntry);
   };
 
@@ -40,16 +44,14 @@ export default function RideCalendar({ entries }: CalendarProps) {
         weekends={true}
         events={events}
         eventClick={handleEventClick}
-        // Customizing the header toolbar to match your request
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,dayGridYear' // View switcher
+          right: 'dayGridMonth,dayGridYear'
         }}
-        // Customizing the colors to match your dark theme
-        eventColor="#eab308" // Tailwind's yellow-400
-        eventTextColor="#1f2937" // Tailwind's gray-800
-        height="auto" // Let the calendar's height be flexible
+        eventColor="#eab308"
+        eventTextColor="#1f2937"
+        height="auto"
       />
 
       <RideDetailModal entry={selectedEntry} onClose={closeModal} />

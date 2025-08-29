@@ -2,7 +2,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { type PhotoAlbum } from '@/types';
 import PhotoAlbumCard from '@/components/PhotoAlbumCard';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 // Helper function to group albums by year
 const groupAndSortAlbums = (albums: PhotoAlbum[]) => {
