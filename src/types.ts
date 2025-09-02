@@ -28,4 +28,6 @@ export type RideDiaryEntry = {
   guidance: string;
   notes: string | null;
   photos_url: string | null;
+  map_image_url: string | null;
+
 };

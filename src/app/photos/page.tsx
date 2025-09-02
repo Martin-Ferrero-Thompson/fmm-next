@@ -1,56 +1,45 @@
 // src/app/photos/page.tsx
 import { createClient } from '@/lib/supabase/server';
-import { type PhotoAlbum } from '@/types';
+import { type RideDiaryEntry, type PhotoAlbum } from '@/types';
 import PhotoAlbumCard from '@/components/PhotoAlbumCard';
-// import Link from 'next/link';
 
-// Helper function to group albums by year
-const groupAndSortAlbums = (albums: PhotoAlbum[]) => {
-  const grouped = albums.reduce((acc, album) => {
-    if (!album.event_date) return acc; // Skip albums without a date
-    const year = new Date(album.event_date).getFullYear();
+// Helper function to group ride entries by year
+const groupRidesByYear = (rides: RideDiaryEntry[]) => {
+  return rides.reduce((acc, ride) => {
+    const year = new Date(ride.ride_date).getFullYear();
     if (!acc[year]) {
       acc[year] = [];
     }
-    acc[year].push(album);
+    acc[year].push(ride);
     return acc;
-  }, {} as Record<string, PhotoAlbum[]>);
-
-  // Custom sort within each year's group
-  for (const year in grouped) {
-    grouped[year].sort((a, b) => {
-      // Prioritize yearly albums
-      const aIsYearly = a.album_type.startsWith('Yearly');
-      const bIsYearly = b.album_type.startsWith('Yearly');
-      if (aIsYearly && !bIsYearly) return -1;
-      if (!aIsYearly && bIsYearly) return 1;
-
-      // Then sort by date (newest first)
-      return new Date(b.event_date!).getTime() - new Date(a.event_date!).getTime();
-    });
-  }
-  return grouped;
+  }, {} as Record<string, RideDiaryEntry[]>);
 };
 
 export default async function PhotosPage() {
   const supabase = await createClient();
 
-  const { data: allAlbums, error } = await supabase
+  // Fetch #1: Get ride-specific albums from the diary
+  const { data: ridesWithPhotos, error: ridesError } = await supabase
+    .from('ride_diary_entries')
+    .select('*')
+    .not('photos_url', 'is', null)
+    .order('ride_date', { ascending: false });
+
+  // Fetch #2: Get special albums from the dedicated photo_albums table
+  const { data: specialAlbums, error: albumsError } = await supabase
     .from('photo_albums')
     .select('*');
 
-  if (error) {
+  if (ridesError || albumsError) {
+    console.error('Error fetching albums:', ridesError || albumsError);
     return <p className="text-center text-red-500">Could not load photo albums.</p>;
   }
 
-  const albums: PhotoAlbum[] = allAlbums || [];
-
-  // Isolate the special "Loan Bikes" album
-  const loanBikesAlbum = albums.find(a => a.album_type === 'Loan Bikes');
-  const rideAlbums = albums.filter(a => a.album_type !== 'Loan Bikes');
-
-  const groupedAlbums = groupAndSortAlbums(rideAlbums);
-  const years = Object.keys(groupedAlbums).sort((a, b) => Number(b) - Number(a)); // Sort years descending
+  const groupedRides = groupRidesByYear(ridesWithPhotos || []);
+  const years = Object.keys(groupedRides).sort((a, b) => Number(b) - Number(a));
+  
+  // Find the "Loan Bikes" album from the special albums
+  const loanBikesAlbum = specialAlbums?.find(a => a.album_type === 'Loan Bikes');
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -66,7 +55,7 @@ export default async function PhotosPage() {
         </section>
       )}
 
-      {/* Sections for each year */}
+      {/* Sections for each year of rides */}
       {years.length > 0 ? (
         <div className="space-y-12">
           {years.map(year => (
@@ -75,16 +64,25 @@ export default async function PhotosPage() {
                 {year}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {groupedAlbums[year].map(album => (
-                  <PhotoAlbumCard key={album.id} album={album} />
+                {groupedRides[year].map(ride => (
+                  <PhotoAlbumCard 
+                    key={ride.id} 
+                    album={{
+                      id: ride.id,
+                      title: ride.name,
+                      album_type: 'Single Event',
+                      event_date: ride.ride_date,
+                      external_url: ride.photos_url!,
+                      thumbnail_url: ride.map_image_url 
+                    }} 
+                  />
                 ))}
               </div>
             </section>
           ))}
         </div>
       ) : (
-        // Show this message if there are no albums other than loan bikes
-        !loanBikesAlbum && <p className="text-center text-gray-400">No photo albums have been added yet.</p>
+         !loanBikesAlbum && <p className="text-center text-gray-400">No photo albums have been added yet.</p>
       )}
     </main>
   );
