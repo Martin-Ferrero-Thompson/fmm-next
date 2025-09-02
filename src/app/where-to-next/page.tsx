@@ -42,7 +42,7 @@ export default async function WhereToNextPage() {
                             <div className="p-6 bg-[#343a40] rounded-lg space-y-3 text-lg text-gray-300">
                                 <p><span className="font-bold text-yellow-400">Title:</span> {ride.name}</p>
                                 <p><span className="font-bold text-yellow-400">Date:</span> {new Date(ride.ride_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
-                                <p><span className="font-bold text-yellow-400">Start Time:</span> {new Date(ride.ride_date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+                                <p><span className="font-bold text-yellow-400">Start Time:</span> {ride.departure_time}</p>
                                 <p><span className="font-bold text-yellow-400">Destination:</span> {ride.destination}</p>
                                 <p><span className="font-bold text-yellow-400">Distance (approx.):</span> {ride.distance}</p>
                                 <p><span className="font-bold text-yellow-400">Ride Time (estimate):</span> {ride.duration}</p>
