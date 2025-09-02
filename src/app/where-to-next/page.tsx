@@ -52,7 +52,7 @@ export default async function WhereToNextPage() {
                                 <p><span className="font-bold text-yellow-400">Title:</span> {ride.name}</p>
                                 <p><span className="font-bold text-yellow-400">Date:</span> {new Date(ride.ride_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
                                 <p><span className="font-bold text-yellow-400">Start Time:</span> {new Date(ride.ride_date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-                                <div className="flex flex-wrap items-baseline gap-x-2"><span className="font-bold text-yellow-400">Start Point:</span> <span className="prose prose-invert inline-block"><ReactMarkdown>{ride.start_point}</ReactMarkdown></span></div>
+                                {/* <div className="flex flex-wrap items-baseline gap-x-2"><span className="font-bold text-yellow-400">Start Point:</span> <span className="prose prose-invert inline-block"><ReactMarkdown>{ride.start_point}</ReactMarkdown></span></div> */}
                                 <p><span className="font-bold text-yellow-400">Destination:</span> {ride.destination}</p>
                                 <p><span className="font-bold text-yellow-400">Distance (approx.):</span> {ride.distance}</p>
                                 <p><span className="font-bold text-yellow-400">Ride Time (estimate):</span> {ride.duration}</p>
