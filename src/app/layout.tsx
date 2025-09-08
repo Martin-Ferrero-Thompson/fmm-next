@@ -1,15 +1,14 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
-
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,13 +27,13 @@ export default function RootLayout({
       <body className={`${inter.className} text-gray-200 flex flex-col min-h-screen`}>
         <Navbar />
 
-        {/* vvv THIS IS THE FIX vvv */}
         <main className="flex-grow bg-gray-900">
           {children}
         </main>
         
         <Footer />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
