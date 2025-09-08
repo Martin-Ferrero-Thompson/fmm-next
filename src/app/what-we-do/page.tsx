@@ -11,14 +11,24 @@ export default async function WhatWeDoPage() {
   const supabase = await createClient();
 
   // Fetch #1: Page intro
-  const { data: page } = await supabase.from('pages').select('title, content').eq('slug', 'what-we-do').single();
-    
+  const { data: page, error: pageError } = await supabase
+    .from('pages')
+    .select('title, content')
+    .eq('slug', 'what-we-do')
+    .single();
+
   // Fetch #2: Accordion items
-  const { data: activities } = await supabase.from('activity_types').select('*').order('display_order');
+  const { data: activities, error: activitiesError } = await supabase
+    .from('activity_types')
+    .select('*')
+    .order('display_order');
+
+  if (pageError || activitiesError) {
+    console.error('Error fetching What We Do page:', pageError || activitiesError);
+    return <p className="text-center text-red-500">Could not load What We Do page.</p>;
+  }
 
   const content = page?.content as SimplePageContent | null;
-
-  // Adapt the 'activities' data to match the generic type our AccordionList expects
   const items: AccordionItemData[] = activities?.map(activity => ({
     id: activity.id,
     title: activity.title,
@@ -28,12 +38,9 @@ export default async function WhatWeDoPage() {
   return (
     <main className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center text-brand mb-4">{page?.title}</h1>
-      
       {content?.introduction && (
         <p className="text-center text-lg text-gray-300 mb-12">{content.introduction}</p>
       )}
-
-      {/* Render the reusable AccordionList with the correct data */}
       <AccordionList items={items} />
     </main>
   );

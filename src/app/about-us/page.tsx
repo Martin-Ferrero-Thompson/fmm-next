@@ -24,16 +24,21 @@ type AboutUsPageContent = {
 export default async function AboutUsPage() {
   const supabase = await createClient();
 
-  const { data: page } = await supabase
+  const { data: page, error } = await supabase
     .from('pages')
     .select('title, content')
     .eq('slug', 'about-us')
     .single();
 
+  if (error) {
+    console.error('Error fetching about us page:', error);
+    return <p className="text-center text-red-500">Could not load About Us page.</p>;
+  }
+
   if (!page || !page.content) {
     return <p>Page content not found.</p>;
   }
-  
+
   const content = page.content as AboutUsPageContent;
 
   return (

@@ -1,7 +1,12 @@
 // src/app/faq/page.tsx
 import { createClient } from '@/lib/supabase/server';
-import AccordionList from '@/components/AccordionList'; // Use the new component
+
+import AccordionList from '@/components/AccordionList';
 import type { AccordionItemData } from '@/components/AccordionList';
+
+type FaqPageContent = {
+  faqs: AccordionItemData[];
+};
 
 export default async function FaqPage() {
   const supabase = await createClient();
@@ -21,10 +26,14 @@ export default async function FaqPage() {
     content: faq.answer,
   })) || [];
 
+  const content: FaqPageContent = {
+    faqs: items,
+  };
+
   return (
     <main className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center text-brand mb-8">Frequently Asked Questions</h1>
-      <AccordionList items={items} />
+      <AccordionList items={content.faqs} />
     </main>
   );
 }

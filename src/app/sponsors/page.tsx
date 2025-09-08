@@ -1,6 +1,20 @@
 // src/app/sponsors/page.tsx
 import { createClient } from '@/lib/supabase/server';
+
 import SponsorCard from '@/components/SponsorCard';
+
+type Sponsor = {
+  id: string;
+  name: string;
+  is_active: boolean;
+  website_url: string;
+  description: string;
+  // Add other fields as needed
+};
+
+type SponsorsPageContent = {
+  sponsors: Sponsor[];
+};
 
 export default async function SponsorsPage() {
   const supabase = await createClient();
@@ -16,13 +30,15 @@ export default async function SponsorsPage() {
     console.error('Error fetching sponsors:', error);
   }
 
+  const content: SponsorsPageContent = {
+    sponsors: sponsors || [],
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center mb-8">Our Sponsors</h1>
-      
-      {/* vvv THIS IS THE ONLY LINE THAT CHANGED vvv */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {sponsors?.map(sponsor => (
+        {content.sponsors.map(sponsor => (
           <SponsorCard key={sponsor.id} sponsor={sponsor} />
         ))}
       </div>

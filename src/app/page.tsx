@@ -16,13 +16,17 @@ type HomePageContent = {
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const { data: page } = await supabase
+  const { data: page, error } = await supabase
     .from('pages')
     .select('content')
     .eq('slug', 'home')
     .single();
 
-  // vvv THIS LINE IS FIXED vvv
+  if (error) {
+    console.error('Error fetching homepage:', error);
+    return <p className="text-center py-12">Homepage content is not available.</p>;
+  }
+
   const content = page?.content as HomePageContent | null;
 
   if (!content) {

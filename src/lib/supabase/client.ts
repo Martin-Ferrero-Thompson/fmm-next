@@ -1,5 +1,7 @@
 // src/lib/supabase/client.ts
-import { createBrowserClient } from '@supabase/ssr'
+// import { createBrowserClient } from '@supabase/ssr'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+
 
 export function createClient() {
   return createBrowserClient(

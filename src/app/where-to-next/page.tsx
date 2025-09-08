@@ -13,24 +13,24 @@ export default async function WhereToNextPage() {
     const today = new Date().toISOString();
 
     const { data: nextRide, error } = await supabase
-      .from('ride_diary_entries')
-      .select('*')
-      .gte('ride_date', today)
-      .order('ride_date', { ascending: true })
-      .limit(1)
-      .single();
+        .from('ride_diary_entries')
+        .select('*')
+        .gte('ride_date', today)
+        .order('ride_date', { ascending: true })
+        .limit(1)
+        .single();
 
     if (error) {
-        console.error("Error fetching next ride:", error);
+        console.error('Error fetching next ride:', error);
+        return <p className="text-center text-red-500">Could not load next ride.</p>;
     }
-    
+
     const ride: RideDiaryEntry | null = nextRide;
 
     return (
         <div className="bg-gray-900">
             <div className="container mx-auto px-4 py-12">
                 <h1 className="text-4xl md:text-5xl font-bold text-center text-brand mb-8">{pageTitle}</h1>
-                
                 {ride ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
                         {/* Left Column: Details */}

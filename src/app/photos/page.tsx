@@ -25,13 +25,16 @@ export default async function PhotosPage() {
     .not('photos_url', 'is', null)
     .order('ride_date', { ascending: false });
 
-  // Fetch #2: Get special albums from the dedicated photo_albums table
   const { data: specialAlbums, error: albumsError } = await supabase
     .from('photo_albums')
     .select('*');
 
-  if (ridesError || albumsError) {
-    console.error('Error fetching albums:', ridesError || albumsError);
+  if (ridesError) {
+    console.error('Error fetching ride diary entries:', ridesError);
+    return <p className="text-center text-red-500">Could not load photo albums.</p>;
+  }
+  if (albumsError) {
+    console.error('Error fetching photo albums:', albumsError);
     return <p className="text-center text-red-500">Could not load photo albums.</p>;
   }
 
