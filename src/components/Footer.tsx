@@ -1,7 +1,9 @@
 // src/components/Footer.tsx
+import packageJson from '../../package.json';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const version = "0.1.0"; // Synced from package.json
+  const version = packageJson.version; // Synced from package.json
 
   return (
     <footer className="bg-gray-800 text-gray-400">
