@@ -1,4 +1,6 @@
 // src/app/contact-us/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';

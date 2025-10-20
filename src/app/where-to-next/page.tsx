@@ -1,4 +1,6 @@
 // src/app/where-to-next/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 import ReactMarkdown from 'react-markdown';
 import Countdown from '@/components/Countdown';

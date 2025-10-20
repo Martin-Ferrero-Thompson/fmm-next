@@ -1,6 +1,7 @@
 // src/app/ride-diary/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
-import { type RideDiaryEntry } from '@/types';
 import RideCalendar from '@/components/RideCalendar';
 
 export default async function RideDiaryPage() {

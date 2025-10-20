@@ -1,4 +1,6 @@
 // src/app/disclaimer/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 import ReactMarkdown from 'react-markdown';
 

@@ -1,4 +1,6 @@
 // src/app/sponsors/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 
 import SponsorCard from '@/components/SponsorCard';

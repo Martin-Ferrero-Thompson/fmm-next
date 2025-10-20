@@ -1,6 +1,8 @@
 // src/app/photos/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
-import { type RideDiaryEntry, type PhotoAlbum } from '@/types';
+import { type RideDiaryEntry } from '@/types';
 import PhotoAlbumCard from '@/components/PhotoAlbumCard';
 
 // Helper function to group ride entries by year

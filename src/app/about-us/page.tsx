@@ -1,4 +1,6 @@
 // src/app/about-us/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 import ReactMarkdown from 'react-markdown';
 import Carousel from '@/components/Carousel';

@@ -1,4 +1,6 @@
 // src/app/faq/page.tsx
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase/server';
 
 import AccordionList from '@/components/AccordionList';
