@@ -35,6 +35,51 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Weekly automated release
+
+This repo includes a scheduled GitHub Actions workflow that performs a weekly production release:
+
+- File: `.github/workflows/weekly-release.yml`
+- Schedule: Every Monday at 06:00 UTC (and can be triggered manually via “Run workflow”)
+- Action: Bumps the patch version in `package.json` (e.g., `0.1.2 -> 0.1.3`) and pushes directly to `main`
+- Result: A push to `main` triggers Vercel to deploy a new production build
+
+Notes:
+
+- No Git tags or GitHub Releases are created by this workflow.
+- If branch protection is enabled in the future, switch the workflow to open a PR instead of pushing to `main`.
+
+## Build timestamp and footer
+
+On every build, a small prebuild script generates build metadata so the footer can display the current version and the publish date/time:
+
+- Script: `scripts/generate-build-info.mjs`
+- Hook: Runs via the `prebuild` npm script before `next build`
+- Output: `src/build-info.ts` with:
+	- `version` — taken from `package.json`
+	- `builtAt` — ISO-8601 UTC timestamp at build time
+
+The footer imports this data and shows:
+
+- `v<version> — Published <date>`
+- The date/time is formatted client-side using the viewer’s locale with “medium date + short time”.
+
+Local development notes:
+
+- A placeholder `src/build-info.ts` exists for local dev and is overwritten during actual builds.
+- To see the formatted date in your browser locally, run the dev server and open the site.
+
+### Try it locally
+
+```bash
+# Start the dev server
+pnpm dev
+
+# Or produce a production build (runs the prebuild script) and then start
+pnpm build
+pnpm start
+```
+
 ## Environment variables
 
 This project includes a `.env.example` file with the common variables used by the app. To run the app locally, copy that file to `.env.local` and fill in the real values (do not commit `.env.local`).
@@ -56,4 +101,10 @@ Important notes:
 - After changing environment variables, restart the dev server so Next picks up the new values.
 - For deployments (Vercel, Netlify, etc.) configure the environment variables in the platform's dashboard rather than committing them to the repo.
 
-If you'd like, I can add a short CI example that shows how to inject masked secrets for builds.
+
+Bumping:
+
+pnpm version patch --no-git-tag-version
+git add package.json pnpm-lock.yaml || true
+git commit -m "chore(release): bump to v$(node -p \"require('./package.json').version\")"
+git push
